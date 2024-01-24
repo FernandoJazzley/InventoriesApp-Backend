@@ -1,4 +1,2 @@
-.env
-
-# Other files and folders
+*.env
 node_modules
