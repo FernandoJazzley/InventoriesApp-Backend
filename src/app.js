@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
-import InventoriesRoutes from './routes/inventories.routes.js';
+import AuthRoutes from './routes/auth.routes.js';
+import InventoriresRoutes from './routes/inventories.routes.js';
 import cors from 'cors'
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -25,7 +26,8 @@ app.use(express.json());
 //pp.use(express.static(path.join(url , 'public')));
 
 //Llama a los endPoints
-app.use('/api/auth',InventoriesRoutes);
+app.use('/api/auth',AuthRoutes);
+app.use('/api/inventories', InventoriresRoutes)
 
 /* app.get('/*', function(req,res) {
     res.sendFile(path.join(url + '/public/index.html'));

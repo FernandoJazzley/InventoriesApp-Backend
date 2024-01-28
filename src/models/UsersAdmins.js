@@ -1,41 +1,32 @@
 import { DataTypes } from "sequelize"
 import { sequelize } from "../DB/db.js"
 
-export const Users = sequelize.define(
-    "users",
+export const UsersAdmins = sequelize.define(
+    "users_admins_inventories",
     {
         id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        profileImage:{
+        complete_name_user:{
             type: DataTypes.STRING
         },
-        complete_name:{
+        email:{
             type: DataTypes.STRING
         },
-        age:{
+        password:{
             type: DataTypes.STRING
         },
-        sex:{
-            type: DataTypes.STRING
-        },
-        birthdate:{
-            type: DataTypes.DATE
-        },
-        branch:{
-            type: DataTypes.STRING
-        },
-        working_hourus:{
-            type: DataTypes.STRING
-        },
-        description:{
+        code:{
             type: DataTypes.STRING
         },
         status:{
             type: DataTypes.SMALLINT
         },
+        token_recovery_password:{
+            type: DataTypes.STRING(500)
+        }
     },
     {
         timestamps: true,

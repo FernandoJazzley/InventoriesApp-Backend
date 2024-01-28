@@ -1,4 +1,4 @@
-import { Users } from "../models/Users.js"
+import { UsersAdmins } from "../models/UsersAdmins.js"
 import { response } from "express"
 import bcrypt  from "bcryptjs"
 import { generarJWT } from '../helpers/jwt.js'
@@ -13,7 +13,7 @@ export const loginUsuario = async(req, res = response) =>{
     const {email, password} = req.body
 
     try{ 
-        let authUser = await Users.findOne({
+        let authUser = await UsersAdmins.findOne({
             where:{
                 email: email,
             },
@@ -92,7 +92,7 @@ export const confirmUser = async (req, res = response) => {
 
         //Verificar existencia del ususario
 
-        let user = await Users.findOne({
+        let user = await UsersAdmins.findOne({
             where:{
                 email: email
             }
@@ -148,7 +148,7 @@ export const createUser = async (req, res = response, resp = response) => {
 
     try{
 
-        let newUser = await Users.findOne({
+        let newUser = await UsersAdmins.findOne({
             where:{
                 email: email
             }
@@ -174,7 +174,7 @@ export const createUser = async (req, res = response, resp = response) => {
     
         req.body.code = code;
 
-        newUser = new Users(req.body);
+        newUser = new UsersAdmins(req.body);
 
         //Encriptar contraseña
         const salt = bcrypt.genSaltSync();
@@ -215,7 +215,7 @@ export const userRecoveryPassword = async (req, res = response) => {
     const {email} = req.params
 
     try {
-        const user = await Users.findOne({
+        const user = await UsersAdmins.findOne({
             where:{
                 email
             },
@@ -282,7 +282,7 @@ export const changePassword = async (req, res = response) => {
         const { email, code } = data;
 
         //Verificar existencia del ususario
-        let user = await Users.findOne({
+        let user = await UsersAdmins.findOne({
             where:{
                 email: email
             }
@@ -332,7 +332,7 @@ export const updatePassword = async(req, res = response) =>{
     } = req.body
 
     try{ 
-        let user = await Users.findOne({
+        let user = await UsersAdmins.findOne({
             where:{
                 code: code,
             },
@@ -391,5 +391,4 @@ export const revalidarToken = async (req, res = response) =>{
         name,
         token
     })
-
 };

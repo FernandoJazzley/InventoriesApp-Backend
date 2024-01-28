@@ -2,11 +2,11 @@ import app from './app.js';
 import dotenv from 'dotenv'
 import { sequelize } from './DB/db.js';
 dotenv.config();
-//import { Users } from './models/Users.js';
+import { Users } from './models/Users.js';
 
 async function main(){    
     try {
-        await sequelize.sync({ force: true })
+        await sequelize.sync({ force: false })
         //Escuchar las peticiones
         app.listen( process.env.PORT, () =>{
             console.log(`Servidor corriendo en puerto ${ process.env.PORT }`)
