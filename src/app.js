@@ -23,15 +23,13 @@ app.use(cors());
 
 //Para que los response puedan leer los Json
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 //pp.use(express.static(path.join(url , 'public')));
 
 //Llama a los endPoints
 app.use('/api/auth',AuthRoutes);
 app.use('/api/inventories', InventoriresRoutes)
-
-/* app.get('/*', function(req,res) {
-    res.sendFile(path.join(url + '/public/index.html'));
-}); */
 
 
 // Directorio Público

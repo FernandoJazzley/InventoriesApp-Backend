@@ -27,7 +27,7 @@ export const Users = sequelize.define(
         branch:{
             type: DataTypes.STRING
         },
-        working_hourus:{
+        working_hours: { 
             type: DataTypes.STRING
         },
         description:{
