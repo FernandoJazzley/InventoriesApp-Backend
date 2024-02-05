@@ -25,15 +25,17 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//pp.use(express.static(path.join(url , 'public')));
+// Directorio Público
+/* const publicPath = path.join(url, 'public');
+app.use(express.static(publicPath));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(publicPath, 'index.html'));
+}); */
+
+app.use( express.static('public'));
 
 //Llama a los endPoints
 app.use('/api/auth',AuthRoutes);
 app.use('/api/inventories', InventoriresRoutes)
-
-
-// Directorio Público
-app.use( express.static('public'));
-
 
 export default app;

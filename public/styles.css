@@ -1,6 +1,7 @@
 html,
 body {
   height: 100%;
+  background-color: #CACACA;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,18 +13,26 @@ body {
   height: 100%;
   top: 0;
   left: 0;
-  /*background: linear-gradient(transparent, rgba(0,0,0,0.5)), url("https://img.freepik.com/fotos-premium/fondo-piel-cuero_76539-143.jpg");*/
-  background: linear-gradient(transparent, rgba(0,0,0,0.5)), url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeIWtpqrPYCHJU6ktkpMofp0TN1YpSqTIH3l6C57fnPYA_yHWzXPW8JI3pMnrVakgHe_4&usqp=CAU");
+  background: linear-gradient(transparent, rgba(0,0,0,0.5)), url("https://img.freepik.com/vector-gratis/fondo-lineas-dinamicas-estilo-papel_23-2149008629.jpg?w=826&t=st=1707117142~exp=1707117742~hmac=8faa859ad810fe0fbd617d238defee7d9e221abb8fccd7b00d93cc045eb0ceb3");
   background-size: cover;
   background-position: center;
 }
+.container {
+    text-align: center;
+}
+
+.alert_error {
+    color: #ff0000; /* Color rojo */
+    font-size: 24px;
+}
+
 .modalbox.success {
-  box-shadow: 0 1px 3px rgba(216, 81, 81, 0.12), 0 1px 2px rgba(0,0,0,0.24);
+  box-shadow: 0 1px 3px rgba(217, 245, 135, 0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 15px;
-  background: rgb(248, 235, 192);
+  background: #AAB7B8;
   padding: 25px 25px 25px;
   width: auto;
   text-align: center;
@@ -47,7 +56,7 @@ body {
 .modalbox.success .icon span {
   postion: absolute;
   font-size: 4em;
-  color: #ffffff;
+  color: #63a31f;
   text-align: center;
   padding-top: 20px;
 }
@@ -61,7 +70,7 @@ body {
   clearn: both;
   display: block;
   font-size: 15px;
-  color: #634923;
+  color: #12317a;
   margin-top: 10px;
 }
 @-webkit-keyframes fall-in {

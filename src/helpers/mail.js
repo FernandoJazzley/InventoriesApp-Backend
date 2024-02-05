@@ -3,18 +3,13 @@ import dotenv from 'dotenv'
 dotenv.config();
 
 const mail = {
-    user: 'maileradmx@aduanas-mexico.com.mx',
-    pass: 'mailer4du4',
+    user: 'fernandojp2155@gmail.com',
+    pass: 'yllo euon tluy hueo',
 }
 
 // create reusable transporter object using the default SMTP transport
 let transporter = nodemailer.createTransport({
-host: "mail.sistemascasa.com.mx",
-port: 587,
-tls:{
-    rejectUnautorized: false
-},
-secure: false, // true for 465, false for other ports
+service: 'gmail',
 auth: {
     user: mail.user, // generated ethereal user
     pass: mail.pass, // generated ethereal password
@@ -45,7 +40,7 @@ return `
 
 <div id="email__content">
     <img src ="https://www.example.com/images/dinosaur.jpg"" alt="">
-    <h2> Hola ${ name }</h2>
+    <h2> Bienvenido ${ name }</h2>
     <p> ${ msg }</p>
 
     <a

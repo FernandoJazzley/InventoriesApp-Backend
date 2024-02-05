@@ -6,11 +6,12 @@ import { v4 as uuidv4} from "uuid"
 import { getTemplateChangePassword, getTemplateConfirm, sendEmail } from "../helpers/mail.js"
 import { getTokenData } from "../middlewares/validar-jwt.js"
 import dotenv from 'dotenv'
+import { body } from "express-validator"
 dotenv.config();
 
 export const loginUsuario = async(req, res = response) =>{
 
-    const {email, password} = req.body
+    const {email, password, sucursal} = req.body
 
     try{ 
         let authUser = await UsersAdmins.findOne({
@@ -115,7 +116,7 @@ export const confirmUser = async (req, res = response) => {
         //Verificar el código
 
         if( code ==! user.code){
-            return res.redirect('../../public/error.html');
+            return res.redirect('/error.html');
         }
 
         //Actualizar usuario
@@ -124,10 +125,9 @@ export const confirmUser = async (req, res = response) => {
 
         // Redireccionar a la confirmación
 
-        return res.redirect(`https://${process.env.HOST}:${process.env.PORTP}/confirm.html`);
+        return res.redirect('/confirm.html');
 
     } catch (error){
-        console.log(error)
         return res.status(500).json({
             success: false,
             msg: 'Error al confirmar usuario, favor de comunicarte con el administrador.'
@@ -187,7 +187,7 @@ export const createUser = async (req, res = response, resp = response) => {
         const template = getTemplateConfirm(req.body.complete_name_user, token, msg, link);
 
         // Enviar el email
-        await sendEmail(req.body.email, 'Bienvenido a NotiCASA', template);
+        await sendEmail(req.body.email, 'Bienvenido a InventoriesApp', template);
 
         await newUser.save()
 
@@ -206,8 +206,6 @@ export const createUser = async (req, res = response, resp = response) => {
 };
 
 export const userRecoveryPassword = async (req, res = response) => {
-
-    console.log('pasa')
 
     const msg = 'Para recuperar tu cuenta ingresa al siguiente Link, el cual tiene un tiempo de vida de 5 min, despues de eso tendras que volver a realizar el proceso.'
     const link = 'Recuperar contraseña'
@@ -325,11 +323,18 @@ export const updatePassword = async(req, res = response) =>{
 
     const {id} = req.params
 
+    console.log(id)
+    console.log('pasa')
+
     const code = id.substring(1,100)
+
+    console.log(code)
 
     const {
         password
     } = req.body
+
+    console.log(req.body)
 
     try{ 
         let user = await UsersAdmins.findOne({

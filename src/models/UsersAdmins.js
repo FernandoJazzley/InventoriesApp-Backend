@@ -12,6 +12,9 @@ export const UsersAdmins = sequelize.define(
         complete_name_user:{
             type: DataTypes.STRING
         },
+        sucursal:{
+            type: DataTypes.STRING
+        },
         email:{
             type: DataTypes.STRING
         },

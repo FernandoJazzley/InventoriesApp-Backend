@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import path from 'path';
-import { getUsers, newUser } from '../controllers/inventories.controller.js';
+import { deleteUser, editUser, getUsers, newUser } from '../controllers/inventories.controller.js';
 
 const router = Router();
 
@@ -23,6 +23,8 @@ const upload = multer({
 router.get('/users/', getUsers);
 
 router.post('/addUser', upload.single('profileImage'), newUser);
+router.put('/editUser/:id',  upload.single('profileImage'),editUser)
+router.delete('/deleteUser/:id', deleteUser)
 
 
 export default router;

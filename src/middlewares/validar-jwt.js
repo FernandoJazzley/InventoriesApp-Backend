@@ -39,6 +39,8 @@ export const getTokenData = (token, type) => {
     let key = ''
     type === 1 ? key = process.env.SECRET_JWT_SEED_RECOVERY : key = process.env.SECRET_JWT_SEED_LOGIN
 
+    console.log(key)
+
     jwt.verify(token, key, (err, decode) =>{
         if(err) {
             console.log(err)
