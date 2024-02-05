@@ -44,7 +44,7 @@ return `
     <p> ${ msg }</p>
 
     <a
-        href="http://${process.env.HOST}:${process.env.PORTP}/api/auth/register/confirm/${ token }"
+        href="http://${process.env.HOST}/api/auth/register/confirm/${ token }"
         target="_blank"
         > ${ link }</a>
 </div>
@@ -63,7 +63,7 @@ export const getTemplateChangePassword = (name, token, msg, link) => {
         <p> ${ msg }</p>
     
         <a
-            href="http://${process.env.HOST}:${process.env.PORTP}/api/auth/changuePassword/${ token }"
+            href="http://${process.env.HOST}/api/auth/changuePassword/${ token }"
             target="_blank"
             > ${ link }</a>
     </div>
