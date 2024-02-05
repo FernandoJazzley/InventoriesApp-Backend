@@ -303,13 +303,13 @@ export const changePassword = async (req, res = response) => {
         //Verificar el código
 
         if( code ==! user.code){
-            return res.redirect('../../public/error.html');
+            return res.redirect('/error.html');
         }
         
 
         // Redireccionar a la página para cambiar la contraseña
 
-        return res.redirect(`http://${process.env.HOST}:${process.env.PORTP}/#/auth/updatePassword/:${code}`);
+        return res.redirect(`${process.env.HOST}#/auth/updatePassword/:${code}`);
 
     } catch (error){
         return res.status(500).json({
