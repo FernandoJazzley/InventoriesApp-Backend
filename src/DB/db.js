@@ -4,7 +4,7 @@ dotenv.config();
 
 export const sequelize = new Sequelize(process.env.BD_CNN_INVENTORIES, {
     dialectOptions: {
-      ssl: false,
+      ssl: true,
     },
   });
 
