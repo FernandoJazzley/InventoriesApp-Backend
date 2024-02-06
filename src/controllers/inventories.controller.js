@@ -4,6 +4,7 @@ import path from 'path';
 import fs, { mkdir } from 'fs';
 import moment from 'moment';
 import { fileURLToPath } from 'url';
+import { UsersAdmins } from "../models/UsersAdmins.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,8 +25,15 @@ export const getUsers = async (req, res = response) => {
 }
 
 export const newUser = async (req, res = response) => {
+
+    const password = 'Demo123#'
+    const msg = 'Ingresa al siguiente link para confirmar tu cuenta.'
+    const contraseña = ` Una vez confirmada tu cuenta, puedes usar la siguiente contraseña para iniciar sesión: <strong>${password}</strong>`
+    const link = 'Confirmar cuenta' 
+
     const {
         complete_name,
+        email,
         age,
         sex,
         birthdate,
@@ -35,6 +43,49 @@ export const newUser = async (req, res = response) => {
     } = req.body;
 
     try {
+
+        let newUserAdmin = await UsersAdmins.findOne({
+            where:{
+                email: email
+            }
+        });
+
+        if( newUserAdmin && newUser.status != 0 ){
+            return res.status(400).json({
+                ok:false,
+                msg: `Ya existe una cuenta con el correo ingresado.`
+            })
+        }
+
+        if( newUserAdmin && newUser.status === 0 ){
+
+            return res.status(400).json({
+                ok:false,
+                msg: `Revisa la bandeja de entrada de tu correo para validar tu cuenta.`
+            })
+        }
+
+        // Generar el código
+        const code = uuidv4();
+    
+        req.body.code = code;
+
+        newUser = new UsersAdmins(req.body);
+
+        //Encriptar contraseña
+        const salt = bcrypt.genSaltSync();
+        newUser.password = bcrypt.hashSync(password, salt)
+
+       //Generar JWT
+        const token = await generarJWT( newUser.id, newUser.complete_name_user, newUser.email, code, 0);
+    
+        //Obtener un template
+        const template = getTemplateConfirm(req.body.complete_name_user, token, msg, link, contraseña);
+
+        // Enviar el email
+        await sendEmail(req.body.email, 'Bienvenido a InventoriesApp', template);
+
+        await newUser.save()
 
          // Formatear la fecha utilizando moment
          const formattedBirthdate = moment(birthdate).format('YYYY-MM-DD');

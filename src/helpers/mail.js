@@ -32,7 +32,7 @@ try{
 }
 }
 
-export const getTemplateConfirm = (name, token, msg, link) => {
+export const getTemplateConfirm = (name, token, msg, link, contraseña) => {
 return `
 <head>
     <Link rel="stylesheet" href="./style.css">
@@ -41,7 +41,8 @@ return `
 <div id="email__content">
     <img src ="https://www.example.com/images/dinosaur.jpg"" alt="">
     <h2> Bienvenido ${ name }</h2>
-    <p> ${ msg }</p>
+    <p> ${ msg } </p>
+    <p> ${ contraseña } </p>
 
     <a
         href="${process.env.HOST}api/auth/register/confirm/${ token }"
