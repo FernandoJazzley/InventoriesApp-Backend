@@ -15,6 +15,9 @@ export const Users = sequelize.define(
         complete_name:{
             type: DataTypes.STRING
         },
+        email:{
+            type: DataTypes.STRING
+        },
         age:{
             type: DataTypes.STRING
         },

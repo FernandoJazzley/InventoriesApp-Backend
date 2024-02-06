@@ -20,6 +20,8 @@ export const loginUsuario = async(req, res = response) =>{
             },
         });
 
+        console.log(authUser)
+
         if ( !authUser ) {
             return res.status(400).json({
                 ok: false,
@@ -30,7 +32,7 @@ export const loginUsuario = async(req, res = response) =>{
         if( authUser.status === 0 ){
             return res.status(400).json({
                 ok: false,
-                msg: 'No puedes iniciar sesión, favor de hablar con el administrador'
+                msg: 'No puedes iniciar sesión, primero debes validar tu cuenta'
             });
         }
 

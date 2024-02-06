@@ -5,6 +5,10 @@ import fs, { mkdir } from 'fs';
 import moment from 'moment';
 import { fileURLToPath } from 'url';
 import { UsersAdmins } from "../models/UsersAdmins.js";
+import { v4 as uuidv4} from "uuid"
+import { getTemplateConfirm, sendEmail } from "../helpers/mail.js"
+import bcrypt  from "bcryptjs"
+import { generarJWT } from '../helpers/jwt.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,9 +21,10 @@ export const getUsers = async (req, res = response) => {
             users,
         });
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             ok: false,
-            msg: 'Error al cambiar la contraseña, favor de comunicarte con el administrador.'
+            msg: 'Error al traer los datos'
         });
     }
 }
@@ -50,14 +55,17 @@ export const newUser = async (req, res = response) => {
             }
         });
 
-        if( newUserAdmin && newUser.status != 0 ){
+
+        if( newUserAdmin && newUserAdmin.status != 0 ){
+            console.log('usuario ya existe')
+            console.log(newUserAdmin)
             return res.status(400).json({
                 ok:false,
                 msg: `Ya existe una cuenta con el correo ingresado.`
             })
         }
 
-        if( newUserAdmin && newUser.status === 0 ){
+        if( newUserAdmin && newUserAdmin.status === 0 ){
 
             return res.status(400).json({
                 ok:false,
@@ -67,25 +75,31 @@ export const newUser = async (req, res = response) => {
 
         // Generar el código
         const code = uuidv4();
-    
-        req.body.code = code;
 
-        newUser = new UsersAdmins(req.body);
+        const addUser = {
+            complete_name_user: complete_name,
+            sucursal: branch,
+            email: email,
+            password: password,
+            status:0,
+            code: code,
+            token_recovery_password: null,
+          };
+    
+        newUserAdmin = new UsersAdmins(addUser);
 
         //Encriptar contraseña
         const salt = bcrypt.genSaltSync();
-        newUser.password = bcrypt.hashSync(password, salt)
+        newUserAdmin.password = bcrypt.hashSync(password, salt)
 
        //Generar JWT
-        const token = await generarJWT( newUser.id, newUser.complete_name_user, newUser.email, code, 0);
+        const token = await generarJWT( newUserAdmin.id, newUserAdmin.complete_name_user, newUserAdmin.email, code, 0);
     
         //Obtener un template
-        const template = getTemplateConfirm(req.body.complete_name_user, token, msg, link, contraseña);
+        const template = getTemplateConfirm(newUserAdmin.complete_name_user, token, msg, link, contraseña);
 
         // Enviar el email
         await sendEmail(req.body.email, 'Bienvenido a InventoriesApp', template);
-
-        await newUser.save()
 
          // Formatear la fecha utilizando moment
          const formattedBirthdate = moment(birthdate).format('YYYY-MM-DD');
@@ -131,6 +145,7 @@ export const newUser = async (req, res = response) => {
         const newUser = await Users.create({
             profileImage,
             complete_name,
+            email,
             age,
             sex,
             birthdate: formattedBirthdate,
@@ -140,6 +155,8 @@ export const newUser = async (req, res = response) => {
             status: status
         });
 
+        await newUserAdmin.save()
+
         res.status(201).json({
             ok: true,
             msg: 'Registro exitoso',
@@ -147,8 +164,9 @@ export const newUser = async (req, res = response) => {
         });
 
     } catch (error) {
+        console.log(error)
         res.status(500).json({
-            msg: 'Error al agregar un nuevo usuario',
+            msg: 'Error al agregar un nuevo usuario, por favor revisa la información',
         });
     }
 };
@@ -232,6 +250,12 @@ export const deleteUser = async (req, res) => {
             });
         }
 
+        let UserAdmin = await UsersAdmins.findOne({
+            where:{
+                email: existingUser.email
+            }
+        });
+
         // Eliminar la imagen si existe
         if (existingUser.profileImage) {
             const imagePath = path.join(__dirname, '..', '..', 'public', existingUser.profileImage.substr(1));
@@ -243,6 +267,7 @@ export const deleteUser = async (req, res) => {
 
         // Eliminar el usuario
         await existingUser.destroy();
+        await UserAdmin.destroy();
 
         res.status(200).json({
             ok: true,
